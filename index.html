@@ -2,118 +2,92 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>Μυστικό</title>
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* Base reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     html, body {
-      height: 100%;
-      font-family: 'Roboto Mono', monospace;
-      background: radial-gradient(circle at top left, #050505, #000 80%);
-      color: #f5c242;
-      overflow: hidden;
+      height:100%;
+      font-family:'Roboto Mono', monospace;
+      background:radial-gradient(circle at top left, #050505, #000 80%);
+      color:#f5c242;
+      overflow:auto;
     }
-
-    /* Flickering stars */
     body::before {
-      content: "";
-      position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: transparent url('https://i.imgur.com/54wpE8G.png') repeat;
-      animation: drift 120s linear infinite;
-      opacity: 0.2;
-      pointer-events: none;
+      content:"";
+      position:fixed; top:-50%; left:-50%;
+      width:200%; height:200%;
+      background:url('https://i.imgur.com/54wpE8G.png') repeat;
+      opacity:0.15; pointer-events:none;
+      animation:drift 120s linear infinite;
     }
+    @keyframes drift { to { transform:translate(50%,50%) } }
 
-    @keyframes drift {
-      from { transform: translate(0,0) }
-      to   { transform: translate(50%,50%) }
-    }
-
-    /* Container centering */
     .container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      padding: 30px 20px;
-      background: rgba(0,0,0,0.6);
-      border: 2px solid #f5c242;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(245,194,66,0.7);
+      max-width:400px;
+      width:90%;
+      margin:50px auto;
+      padding:20px;
+      background:rgba(0,0,0,0.6);
+      border:2px solid #f5c242;
+      border-radius:12px;
+      text-align:center;
+      box-shadow:0 0 20px rgba(245,194,66,0.7);
     }
-
     h1 {
-      font-family: 'Creepster', cursive;
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      animation: flicker 3s infinite;
+      font-family:'Creepster', cursive;
+      font-size:2.2rem;
+      margin-bottom:15px;
+      animation:flicker 3s infinite;
     }
-
     @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity:1; }
-      20%, 24%, 55% { opacity:0.4; }
+      0%,19%,21%,23%,25%,54%,56%,100% { opacity:1; }
+      20%,24%,55%                  { opacity:0.4; }
     }
-
-    p.instruction {
-      font-size: 1.1rem;
-      margin-bottom: 15px;
+    .instruction { font-size:1rem; margin-bottom:10px; }
+    input {
+      width:100%;
+      font-size:1.2rem;
+      padding:8px;
+      margin-bottom:12px;
+      border:2px solid #f5c242;
+      border-radius:4px;
+      background:transparent;
+      color:#f5c242;
+      text-align:center;
     }
-
-    input[type="password"] {
-      font-size: 1.5rem;
-      width: 80%;
-      padding: 8px;
-      border: 2px solid #f5c242;
-      border-radius: 4px;
-      background: transparent;
-      color: #f5c242;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
     button {
-      font-size: 1.1rem;
-      padding: 10px 20px;
-      background-color: #f5c242;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      color: #000;
-      transition: background 0.2s;
+      width:100%;
+      font-size:1rem;
+      padding:10px;
+      background:#f5c242;
+      border:none;
+      border-radius:4px;
+      cursor:pointer;
+      transition:background 0.2s;
     }
-
-    button:hover {
-      background-color: #e0a800;
-    }
-
-    #secretLink {
-      display: none;
-      margin-top: 20px;
-      font-size: 1.2rem;
-      text-decoration: underline;
-      color: #f5c242;
-      cursor: pointer;
-    }
-
+    button:hover { background:#e0a800; }
     #errorMsg {
-      display: none;
-      margin-top: 12px;
-      color: #ff4f4f;
-      font-weight: bold;
+      display:none;
+      margin-top:10px;
+      color:#ff4f4f;
+      font-weight:bold;
+    }
+    #secretLink {
+      display:none;
+      margin-top:20px;
+      font-size:1.1rem;
+      color:#f5c242;
+      text-decoration:underline;
+    }
+
+    /* Media query for very narrow screens */
+    @media (max-width:360px) {
+      .container { margin:20px auto; padding:15px; }
+      h1 { font-size:1.8rem; }
+      input, button { font-size:1rem; }
+      #secretLink { font-size:1rem; }
     }
   </style>
 </head>
@@ -122,30 +96,34 @@
     <h1>Καλώς ήρθες</h1>
     <p class="instruction">Πληκτρολόγησε τον 3ψήφιο κωδικό:</p>
     <input type="password" id="codeInput" maxlength="3" placeholder="XXX">
-    <br>
-    <button onclick="checkCode()">Υποβολή</button>
+    <button id="submitBtn">Υποβολή</button>
     <div id="errorMsg">Λάθος κωδικός! Προσπάθησε ξανά.</div>
-    <a id="secretLink" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+    <a id="secretLink" href="https://www.youtube.com./watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1" target="_blank">
       👉 Πάτα εδώ για το μυστικό
     </a>
   </div>
 
   <script>
-    function checkCode() {
-      const input = document.getElementById("codeInput").value;
-      const link = document.getElementById("secretLink");
-      const error = document.getElementById("errorMsg");
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const input = document.getElementById('codeInput');
+      const btn   = document.getElementById('submitBtn');
+      const err   = document.getElementById('errorMsg');
+      const link  = document.getElementById('secretLink');
 
-      if (input === "123") {
-        error.style.display = "none";
-        link.style.display = "block";
-      } else {
-        link.style.display = "none";
-        error.style.display = "block";
-      }
-    }
+      btn.addEventListener('click', ()=>{
+        if (input.value === '683') {
+          err.style.display = 'none';
+          link.style.display = 'block';
+        } else {
+          link.style.display = 'none';
+          err.style.display = 'block';
+        }
+      });
+    });
   </script>
 </body>
 </html>
+
+
 
 
